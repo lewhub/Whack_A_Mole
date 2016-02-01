@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+ <head>
+   <meta charset="utf-8">
+   <style media="screen">
+     div {
+       border: 1px solid black;
+     }
+     .hole {
+       width: 100px;
+       height: 100px;
+       display: inline-block;
+     }
+     .hole1{background: tomato}
+     .mole {width: 90px}
+     .container {
+       width: 422px;
+       margin: 0 auto;
+     }
+     h1, h2 {
+       text-align: center;
+     }
+   </style>
+   <title>Whack A Mole!!</title>
+ </head>
+<body>
+  <h1>Whack A Mole!!</h1>
+  <h2>Timer</h2>
+  <h2 id="timer">60</h2>
+ <div class="container">
+   <div class="hole"></div>
+   <div class="hole"></div>
+   <div class="hole">
+   </div>
+   <div class="hole"></div>
+   <br>
+   <div class="hole"></div>
+   <div class="hole"></div>
+   <div class="hole"></div>
+   <div class="hole"></div>
+   <br>
+   <div class="hole"></div>
+   <div class="hole"></div>
+   <div class="hole"></div>
+   <div class="hole"></div>
+ </div>
+ <audio src="whack-sound.mp3"></audio>
+ <script type="text/javascript">
+   var game = {
+     score: 0,
+     prevMole: 0,
+     heading: document.querySelector('h1'),
+     sound: document.querySelector('audio'),
+     currentMole: 0,
+     timer: document.querySelector("#timer"),
+     moleImg: '<img class="mole" src="mole.png" alt="" />',
+     timeLeft: 60,
+     decrementTimer: function(){
+       game.timeLeft -= 1
+       game.timer.innerHTML = game.timeLeft
+     },
+     holes: document.querySelectorAll(".hole"),
+     moveMole: function(){
+      for (var z = 0; z < 12; z += 1) {
+        game.holes[z].innerHTML = ""
+      }
+        game.holes[game.pickRandomNumber(12)].innerHTML = game.moleImg
+
+     },
+     init: function(){
+       for (var counter = 0; counter < game.holes.length; counter += 1) {
+         game.holes[counter].addEventListener("click", game.checkMole)
+       }
+       setInterval(game.decrementTimer, 1000)
+       setInterval(game.moveMole, 2000)
+     },
+     pickRandomNumber: function(upperLimit){
+       return Math.floor(Math.random() * upperLimit)
+     },
+     checkMole: function(){
+         if (this.innerHTML != ''){
+           console.log("mole is here")
+           game.sound.play()
+           if (game.score === 10) {
+             game.heading.innerHTML = "You Win!!!"
+           }
+           game.score += 1
+         } else {
+           console.log("mole is not here")
+         }
+       }
+   }
+    game.init()
+ </script>
+</body>
+ </html>
